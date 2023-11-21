@@ -1,0 +1,80 @@
+[200~#!/usr/bin/env python3
+def register():
+  db = open("database.text", "r")
+  Username = input("create Username:")
+  Password = input("create Password")
+  Password1 = input("confirm Password")
+  d = []
+  f = []
+  for i in db:
+    a, b = i.split(",")
+    b = b.strip()
+    d.append(a)
+    f.append(b)
+  data = dict(zip(d, f))
+  print("data")
+
+  if Password != Password1:
+    print("Password mismatch, restart")
+    register()
+  else:
+    if len(Password) <= 6:
+      print("Password too short, restart:")
+      register()
+    elif Username in d:
+      print("Username already exists, restaret:")
+      register()
+    else:
+      db = open("database.text", "a")
+      db.write(Username + "," + Password + " ")
+      print("success!")
+
+
+register()
+
+
+def access():
+  db = open("database.text", "r")
+  Username = input("Enter Username:")
+  Password = input("Enter Password")
+
+  if len(Username) > 0 and len(Password) > 0:
+    d = []
+    f = []
+    for i in db:
+      a, b = i.split(",")
+      b = b.strip()
+      d.append(a)
+      f.append(b)
+    data = dict(zip(d, f))
+
+    try:
+      if data.get(Username):
+        try:
+          if Password == data[Username]:
+            print("Access Granted!")
+            print("Hi,", Username)
+          else:
+            print("Password mismatch, restart")
+        except:
+          print("Username or Password not found, restart")
+      else:
+        print("Username or Password not found")
+    except:
+      print("Login Error")
+  else:
+    print("Username or Password not found")
+
+
+def home(option=None):
+  option = input("Login | SignUp:")
+  if option == "Login":
+    access()
+  elif option == "SignUp":
+    register()
+  else:
+    print("Please enter an option")
+
+
+home()
+
